@@ -13,8 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * This is a collection of code snippets using Java streams.
+ */
 public class HelloStreams {
 
+	/**
+	 * Simple Person useful to demonstrate Java streams.
+	 */
 	public static class Person {
 		public final String name;
 		public final int age;
@@ -32,6 +38,9 @@ public class HelloStreams {
 		}
 	}
 
+	/**
+	 * Example data containing several {@link Person}s.
+	 */
 	public static final List<Person> PERSONS = Arrays.asList(
 			new Person("Alice", 51, Arrays.asList("Hiking", "Photography")),
 			new Person("Bob", 18, Arrays.asList("Astronomy", "Photography")),
@@ -40,6 +49,27 @@ public class HelloStreams {
 			new Person("Edward", 51, Arrays.asList("Karate"))
 			);
 	
+	/**
+	 * Tuple containing two typed values.
+	 *
+	 * @param <T1> the type of the first value
+	 * @param <T2> the type of the second value
+	 */
+	private static class Pair<T1, T2> {
+		public final T1 value1;
+		public final T2 value2;
+
+		public Pair(T1 value1, T2 value2) {
+			this.value1 = value1;
+			this.value2 = value2;
+		}
+
+		@Override
+		public String toString() {
+			return "(" + value1 + ", " + value2 + ")";
+		}
+	}
+
 	public static void main(String[] args) {
 		helloFilter();
 		helloCollectToList();
@@ -378,20 +408,5 @@ public class HelloStreams {
 		long endMillis = System.currentTimeMillis();
 		System.out.println(result);
 		System.out.println("in " + (endMillis - startMillis) + " ms");
-	}
-	
-	private static class Pair<T1, T2> {
-		public final T1 value1;
-		public final T2 value2;
-
-		public Pair(T1 value1, T2 value2) {
-			this.value1 = value1;
-			this.value2 = value2;
-		}
-
-		@Override
-		public String toString() {
-			return "(" + value1 + ", " + value2 + ")";
-		}
 	}
 }
