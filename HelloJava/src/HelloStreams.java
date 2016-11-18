@@ -167,6 +167,7 @@ public class HelloStreams {
 						person -> person.name)); // map to value
 			System.out.println(result);
 		} catch (IllegalStateException ex) {
+			// note: the IllegalStateException has wrong message "Duplicate key Charlie" - but 'Charlie' is a value not a key
 			ex.printStackTrace();
 		}
 	}
