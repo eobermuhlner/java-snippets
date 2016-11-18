@@ -79,6 +79,7 @@ public class HelloStreams {
 		helloCollectToMap1();
 		helloCollectToMap2();
 		helloCollectToMap3();
+		helloCollectToMap4();
 		helloMapToCollection();
 		helloFlatMap();
 		helloFlatMapDistinct();
@@ -102,7 +103,6 @@ public class HelloStreams {
 		helloExampleFindNamesOfPersonsWithSameAge();
 		helloExampleFindNameOfPersonWithMostHobbies1();
 		helloExampleFindNameOfPersonWithMostHobbies2();
-		helloExampleFindPersonsInAgeGroups();
 		helloExampleCalculatePi();
 	}
 
@@ -177,6 +177,19 @@ public class HelloStreams {
 					person -> person.age, // map to key
 					person -> person.name, // map to value
 					(name1, name2) -> name1 + "/" + name2)); // merge two values into one
+		System.out.println(result);
+	}
+
+	private static void helloCollectToMap4() {
+		Map<Integer, List<String>> result = PERSONS.stream()
+			.collect(Collectors.<Person, Integer, List<String>> toMap( // note: type inference seems to fail here - so we provide the generic types
+					person -> person.age / 10 * 10, // map age group (10 years) to key
+					person -> Arrays.asList(person.name), // map to value
+					(list1, list2) -> {
+						List<String> merged = new ArrayList<>(list1);
+						merged.addAll(list2);
+						return merged; // merge two List<String> into a single List<String>
+					})); // merge two values into one
 		System.out.println(result);
 	}
 
@@ -376,20 +389,6 @@ public class HelloStreams {
 		// Similar special reduction methods: min(), max()
 	}
 
-	private static void helloExampleFindPersonsInAgeGroups() {
-		Map<Integer, List<Person>> result = PERSONS.stream()
-			.collect(Collectors.<Person, Integer, List<Person>> toMap( // note: type inference seems to fail here - so we provide the generics
-					person -> person.age / 10 * 10, // map age group to key
-					person -> Arrays.asList(person), // map person to List<Person> with a single entry
-					(list1, list2) -> {
-						List<Person> merged = new ArrayList<Person>(list1);
-						merged.addAll(list2);
-						return merged; // merge two List<Person> into a single List<Person>
-					}));
-		result.entrySet().stream()
-			.forEach(System.out::println);
-	}
-	
 	private static void helloExampleCalculatePi() {
 		int n = 10000000;
 		long startMillis = System.currentTimeMillis();
