@@ -347,6 +347,7 @@ public class HelloStreams {
 		try {
 			List<Person> result = forkJoinPool.submit(() ->
 				PERSONS.stream()
+					.parallel()
 					.filter(person -> person.age == 25)
 					.collect(Collectors.toList())
 			).get();
