@@ -134,8 +134,7 @@ public class HelloStreams {
 			.collect(
 					() -> new ArrayList<>(), // supplies an empty container to collect into
 					(list, person) -> list.add(person), // adds a value to a container
-					(list1, list2) -> Integer.parseInt("xxx") // only called if parallel()
-					);
+					(list1, list2) -> System.out.println("MERGING")); // only called if parallel() -- correct impl is below!
 		System.out.println(result);
 	}
 
@@ -146,8 +145,7 @@ public class HelloStreams {
 			.collect(
 					() -> new ArrayList<>(), // supplies an empty container to collect into
 					(list, person) -> list.add(person), // adds a value to a container
-					(list1, list2) -> list1.addAll(list2) // merges the second container into the first one
-					);
+					(list1, list2) -> list1.addAll(list2)); // merges the second container into the first one
 		System.out.println(result);
 	}
 
@@ -361,6 +359,7 @@ public class HelloStreams {
 		try {
 			List<Person> result = forkJoinPool.submit(() ->
 				PERSONS.stream()
+					.parallel()
 					.filter(person -> person.age == 25)
 					.collect(Collectors.toList())
 			).get();
