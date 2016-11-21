@@ -74,7 +74,7 @@ public class HelloStreams {
 		helloFilter();
 		helloCollectToList();
 		helloPeek();
-		helloCollectToMyList();
+		helloCollectToMyListIncomplete();
 		helloCollectToMyListParallel();
 		helloCollectToMap1();
 		helloCollectToMap2();
@@ -121,20 +121,21 @@ public class HelloStreams {
 
 	private static void helloPeek() {
 		List<Person> result = PERSONS.stream()
-			.peek(person -> System.out.println("Before filter: " + person))
+			.peek(person -> System.out.println("Before filter: " + person)) // peek at elements of stream - useful for debugging
 			.filter(person -> person.age == 25) // filter only matching elements
-			.peek(person -> System.out.println("After filter:  " + person))
+			.peek(person -> System.out.println("After filter:  " + person)) // peek at elements of stream - useful for debugging
 			.collect(Collectors.toList());
 		System.out.println(result);
 	}
 
-	private static void helloCollectToMyList() {
+	private static void helloCollectToMyListIncomplete() {
+		// Incomplete collection to List, see next example for complete solution
 		List<Person> result = PERSONS.stream()
 			.filter(person -> person.age == 25)
 			.collect(
 					() -> new ArrayList<>(), // supplies an empty container to collect into
 					(list, person) -> list.add(person), // adds a value to a container
-					(list1, list2) -> System.out.println("MERGING")); // only called if parallel() -- correct impl is below!
+					(list1, list2) -> System.out.println("MERGING")); // only called if parallel() -- correct solution is below!
 		System.out.println(result);
 	}
 
@@ -270,6 +271,11 @@ public class HelloStreams {
 		System.out.println(sum);
 		
 		// Similar special int reduction methods: sum(), average(), summaryStatistics()
+		// Special reduction methods: reduce()
+		// Convert to Stream<Integer>: boxed()
+		// Convert to other primitive streams: asDoubleString(), asLongStream()
+		// Map to another primitive int stream: map()
+		// Map to any object stream: mapToObj()
 	}
 
 	private static void helloCollectSummingInt() {
